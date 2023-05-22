@@ -24,7 +24,7 @@ namespace Zadanie2
             this.Minutes = (byte)(Minutes % minutesInOneHour);
             this.Seconds = (byte)(Seconds % secondsInOneMinutes);
 
-            if (Hours >= 24 || Minutes >= 60 || Seconds >= 60)
+            if (Hours > 24 || Minutes > 60 || Seconds > 60)
                 throw new ArgumentException("Podano nie prawidłowe dane");
 
             if (Hours > byte.MaxValue || Minutes > byte.MaxValue || Seconds > byte.MaxValue) throw new ArgumentOutOfRangeException();
@@ -35,13 +35,36 @@ namespace Zadanie2
 
         public Time() : this(0, 0, 0) { }
         public Time(byte Hours, byte Minutes) : this(Hours, Minutes, 0) { }
+
         public Time(byte Hours) : this(Hours, 0, 0) { }
 
         public Time(string hh, string mm, string ss)
         {
-            this.Hours = byte.Parse(hh);
-            this.Minutes = byte.Parse(mm);
-            this.Seconds = byte.Parse(ss);
+
+            if (byte.Parse(hh) < 24)
+            {
+                this.Hours = byte.Parse(hh);
+
+            }
+            else
+                throw new ArgumentException("Za duża wartość");
+
+            if (byte.Parse(mm) < 60)
+            {
+                this.Minutes = byte.Parse(mm);
+
+            }
+            else
+                throw new ArgumentException("Za duża wartość");
+
+            if (byte.Parse(ss) < 60)
+            {
+                this.Seconds = byte.Parse(ss);
+
+            }
+            else
+                throw new ArgumentException("Za duża wartość");
+
 
         }
         public override string ToString()
@@ -65,9 +88,9 @@ namespace Zadanie2
 
             return other.Seconds.CompareTo(this.Seconds);
 
-
-
         }
+
+
 
         public bool Equals(Time other)
         {
@@ -88,15 +111,6 @@ namespace Zadanie2
             return (Hours, Minutes, Seconds).GetHashCode();
         }
 
-        public static Time operator +(Time a, Time b)
-        {
-            int sum = (a.Hours + b.Hours);
-            int sum2 = (a.Minutes + b.Minutes);
-            int sum3 = (a.Seconds + b.Seconds);
-            int sumSum = sum + sum2 + sum3;
-            return new Time((byte)sumSum);
-
-        }
 
         public static bool operator ==(Time a, Time b) =>
             a.Equals(b);
@@ -111,13 +125,22 @@ namespace Zadanie2
             a.CompareTo(b) <= 0;
         public static bool operator >=(Time a, Time b) =>
             a.CompareTo(b) >= 0;
+        public static Time operator +(Time t1,Time t2)
+        {
+            int hoursAdditon = t1.Hours + t2.Hours;
+            int minutesAddition = t1.Minutes + t2.Minutes;
+            int secundesAddition = t1.Seconds + t2.Seconds;
 
- 
+            return new Time((byte)(hoursAdditon % hoursInOneDay), (byte)(minutesAddition % minutesInOneHour), (byte)(secundesAddition % secondsInOneMinutes));
+        }
+        public static Time operator -(Time t1,Time t2)
+        {
+            int hoursSubtraction = t1.Hours - t2.Hours;
+            int minutesSubtraction = t1.Minutes - t2.Minutes;
+            int secundesSubtraction = t1.Seconds - t2.Seconds;
 
-
-
-
-
-
+            return new Time((byte)(hoursSubtraction), (byte)(minutesSubtraction % minutesInOneHour), (byte)(secundesSubtraction % secondsInOneMinutes));
+        }
     }
+            
 }
