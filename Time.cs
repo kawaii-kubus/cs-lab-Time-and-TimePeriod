@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Zadanie2
 {
     /// <summary>
-    /// Struktura zawierająca upływ czasu w postaci Godzina:Minuta:Sekunda
+    /// Struktura zawierająca punkt w czasie w postaci Godzina:Minuta:Sekunda
     /// </summary>
     public struct Time : IEquatable<Time>, IComparable<Time>
     {
